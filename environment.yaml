@@ -1,0 +1,8 @@
+name: DES_F2025
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - tex-fmt
+  - ruff
+  - pytest
