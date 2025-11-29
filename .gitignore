@@ -1,3 +1,9 @@
+# PROJECT SPECIFIC
+tex/build_artifacts/
+
+# VIM
+*.swp
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
