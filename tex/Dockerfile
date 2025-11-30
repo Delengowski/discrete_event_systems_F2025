@@ -4,4 +4,4 @@ WORKDIR /app
 
 COPY . .
 
-RUN pdflatex -output-directory=/app/ -output-format=pdf -jobname=main /app/main.tex
+RUN latexmk -output-directory=/app/ -output-format=pdf -jobname=main /app/main.tex
