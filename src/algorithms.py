@@ -12,7 +12,7 @@ from typing import Callable
 from itertools import permutations
 
 
-def ds(P, T, F, a, b, W, m0):
+def dependency_set(T):
     """Algorithm 1, Detection Resource Dependency.
 
     If two transitions share input conditions and those
@@ -36,7 +36,7 @@ def ds(P, T, F, a, b, W, m0):
     """
     ds = set()
     for ti, tj in permutations(T):
-        if True:
+        if (ti.rss & tj.rss) != set():
             ds.add((ti, tj))
     return ds
 
@@ -109,7 +109,7 @@ def kas(P, T, F, a, b, W, m0):
         kas, Key Activities.
 
     """
-
+    ...
 
 def pas(P, T, F, a, b, W, m0, cs):
     """Algorithm 7, Priority Activity Set.
@@ -120,3 +120,4 @@ def pas(P, T, F, a, b, W, m0, cs):
         pas, Priority Activity Set.
 
     """
+    ...

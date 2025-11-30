@@ -1,9 +1,14 @@
 from importlib import resources
 import csv
-from typing import Any
+from typing import Any, TypedDict
 from io import StringIO
 
-def transform_tsv_set_value(val: Any) -> frozenset|list[dict]:
+class ElementMapper(TypedDict):
+    subscript: Literal["m", "r"]
+    index: int
+    super: int|None
+
+def transform_tsv_set_value(val: Any) -> frozenset|list[ElementMapper]:
     match val:
         case None|"":
             return frozenset()
