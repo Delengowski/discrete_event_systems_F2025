@@ -1,0 +1,31 @@
+Organization	Activity ID	Minimum Execution Time	Maximum Execution Time	Required Resource Set	Sent Resource Set	Pre-activities
+Police Station	1	2	4			
+Police Station	2	3	5	r2	r2,m1	1
+Police Station	3	4	7	r1	r1	2
+Police Station	4	5	10	r3^2, r5^2	r3^2	3
+Police Station	5	6	12	r3^2, r5^2	r3^2	3
+Police Station	6	8	14	r3^2, r5^2	r3^2	3
+Police Station	7	5	8		m2	4,5,6
+Police Station	8	6	10			7
+Emergency Command Center	9	2	3	m1		
+Emergency Command Center	10	3	5	r2, m2	r2,m3,m4,m5	9
+Emergency Command Center	11	5	8	m6, m7, m8		10
+Emergency Command Center	12	8	15			11
+Emergency Command Center	13	2	4			12
+Emergency Command Center	14	3	5	r3^2, r4	r3^2,r4	13
+EOD Team	15	4	8	m3		
+EOD Team	16	14	16			15
+EOD Team	17	4	5	r2	r2,m6	16
+Fire Brigade	18	4	6	r1,m4	r1	
+Fire Brigade	19	8	12			18
+Fire Brigade	20	6	8			19
+Fire Brigade	21	6	8			19
+Fire Brigade	22	2	3	r2	r2,m7	20,21
+Fire Brigade	14	3	5	r3^2, r4	r3^2,r4	13
+Hospital	23	3	5	r1,m5	r1	
+Hospital	24	4	6			23
+Hospital	25	8	12			24
+Hospital	26	6	8			24
+Hospital	27	4	6			25,26
+Hospital	28	2	3		m8	27
+Hospital	14	3	5	r3^2,r4	r3^2,r4	13

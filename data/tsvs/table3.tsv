@@ -1,0 +1,14 @@
+Resource Type	Resource ID	Meaning	Property	Initial Number
+External	r1	ferry boat	Reusable	1
+External	r2	public communication device	Reusable	1
+External	r3	emergency personnel	Reusable	6
+External	r4	media personnel and equipment	Reusable	1
+External	r5	smoke masks	Reusable	6
+Internal	m1	emergency information	Consumable	
+Internal	m2	site conditions	Consumable	
+Internal	m3	medical rescue instruction	Consumable	
+Internal	m4	fire rescue instruction	Consumable	
+Internal	m5	search EOD instruction	Consumable	
+Internal	m6	EOD search results	Consumable	
+Internal	m7	fire rescure results	Consumable	
+Internal	m8	medical rescue results	Consumable	
