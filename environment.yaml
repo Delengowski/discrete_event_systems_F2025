@@ -6,5 +6,6 @@ dependencies:
   - tex-fmt
   - ruff
   - pytest
+  - click
   - pip:
     - SNAKES
