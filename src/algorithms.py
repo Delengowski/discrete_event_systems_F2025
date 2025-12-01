@@ -9,7 +9,8 @@ Notes:
 """
 
 from typing import Callable
-from itertools import permutations
+from itertools import combinations
+from .objects import Activity
 
 
 def dependency_set(T):
@@ -35,8 +36,12 @@ def dependency_set(T):
 
     """
     ds = set()
-    for ti, tj in permutations(T):
-        if (ti.rss & tj.rss) != set():
+    for ti, tj in combinations(set(T), 2):
+        if (
+            (ti.rss & tj.rss) != set()
+            and (ti.idx - 1 in ti.pa)
+            and (tj.idx - 1 in tj.pa)
+        ):
             ds.add((ti, tj))
     return ds
 
@@ -110,6 +115,7 @@ def kas(P, T, F, a, b, W, m0):
 
     """
     ...
+
 
 def pas(P, T, F, a, b, W, m0, cs):
     """Algorithm 7, Priority Activity Set.

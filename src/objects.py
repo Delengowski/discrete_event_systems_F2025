@@ -10,9 +10,9 @@ class ResourcePlace:
     subscript: Literal["m", "r"]
     idx: int
     rtype: Literal["External", "Internal"] = field(compare=False, hash=False)
-    meaning: str  = field(compare=False, hash=False)
-    prop: Literal["Resuable", "Consumable"]  = field(compare=False, hash=False)
-    initial_number: int | None  = field(compare=False, hash=False)
+    meaning: str = field(compare=False, hash=False)
+    prop: Literal["Resuable", "Consumable"] = field(compare=False, hash=False)
+    initial_number: int | None = field(compare=False, hash=False)
     super_idx: int | None = field(default=None, compare=False, hash=False)
 
     def __repr__(self) -> str:
@@ -27,22 +27,29 @@ class ResourcePlace:
 @dataclass(slots=True, frozen=True, repr=False)
 class Activity:
     idx: int
-    org: str = field(compare=False, hash=False)
-    t_min: int = field(compare=False, hash=False)
-    t_max: int = field(compare=False, hash=False)
-    rss: frozenset[ResourcePlace] = field(compare=False, hash=False)
-    srs: frozenset[ResourcePlace] = field(compare=False, hash=False)
-    pa: frozenset[int] = field(compare=False, hash=False)
+    org: str | None = field(default=None, compare=False, hash=False)
+    t_min: int | None = field(default=None, compare=False, hash=False)
+    t_max: int | None = field(default=None, compare=False, hash=False)
+    rss: frozenset[ResourcePlace] = field(
+        default_factory=frozenset, compare=False, hash=False
+    )
+    srs: frozenset[ResourcePlace] = field(
+        default_factory=frozenset, compare=False, hash=False
+    )
+    pa: frozenset[int] = field(default_factory=frozenset, compare=False, hash=False)
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(t_{self.idx})"
+
 
 table1 = records_elt("table1")
 table3 = records_elt("table3")
 
 table3_mapper_to_resource = {
-    (row["Resource ID"][0]["subscript"], row["Resource ID"][0]["index"]): row for row in table3
+    (row["Resource ID"][0]["subscript"], row["Resource ID"][0]["index"]): row
+    for row in table3
 }
+
 
 def process_resource_set_items(eles: list[ElementMapper]) -> frozenset[ResourcePlace]:
     resources = []
@@ -58,10 +65,11 @@ def process_resource_set_items(eles: list[ElementMapper]) -> frozenset[ResourceP
                 meaning=table3_info["Meaning"],
                 prop=table3_info["Property"],
                 initial_number=table3_info["Initial Number"],
-                super_idx=ele["super"]
+                super_idx=ele["super"],
             )
         )
     return frozenset(resources)
+
 
 def load_activities() -> list[Activity]:
     activity_table = []
@@ -72,7 +80,7 @@ def load_activities() -> list[Activity]:
         t_max = row["Maximum Execution Time"]
 
         required_resource_set = row["Required Resource Set"]
-        if required_resource_set: 
+        if required_resource_set:
             rss = process_resource_set_items(required_resource_set)
         else:
             rss = required_resource_set
