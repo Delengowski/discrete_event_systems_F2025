@@ -13,7 +13,7 @@ from itertools import combinations
 from .objects import Activity
 
 
-def dependency_set(T):
+def dependency_set(T: list[Activity]) -> set[tuple[Activity, Activity]]:
     """Algorithm 1, Detection Resource Dependency.
 
     If two transitions share input conditions and those

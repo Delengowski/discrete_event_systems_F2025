@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass, field
 from typing import Literal
-from data import records_elt, ElementMapper
+from data import load_table1, load_table3, ElementMapper
 
 
 @dataclass(slots=True, frozen=True, repr=False)
@@ -24,7 +24,7 @@ class ResourcePlace:
         return f"{type(self).__name__}({prefix}_{self.idx}{super_idx})"
 
 
-@dataclass(slots=True, frozen=True, repr=False)
+@dataclass(slots=True, frozen=True, repr=False, order=True)
 class Activity:
     idx: int
     org: str | None = field(default=None, compare=False, hash=False)
@@ -42,8 +42,8 @@ class Activity:
         return f"{type(self).__name__}(t_{self.idx})"
 
 
-table1 = records_elt("table1")
-table3 = records_elt("table3")
+table1 = load_table1()
+table3 = load_table3()
 
 table3_mapper_to_resource = {
     (row["Resource ID"][0]["subscript"], row["Resource ID"][0]["index"]): row

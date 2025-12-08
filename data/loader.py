@@ -1,12 +1,10 @@
 from importlib import resources
 import csv
-from typing import Any, TypedDict
+from typing import Any
 from io import StringIO
 
-class ElementMapper(TypedDict):
-    subscript: Literal["m", "r"]
-    index: int
-    super: int|None
+from .types import ElementMapper, Table1Row, Table3Row
+
 
 def transform_tsv_set_value(val: Any) -> frozenset|list[ElementMapper]:
     match val:
@@ -86,3 +84,9 @@ def records_elt(name: str) -> list[dict[str, Any]]:
         } for x in loaded
     ]
     return transformed
+
+def load_table1() -> list[Table1Row]:
+    return records_elt("table1")
+
+def load_table3() -> list[Table3Row]:
+    return records_elt("table3")
