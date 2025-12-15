@@ -35,14 +35,12 @@ def dependency_set(T: list[Activity]) -> set[tuple[Activity, Activity]]:
         DependencySet (ds).
 
     """
-    ds = set()
-    for ti, tj in combinations(set(T), 2):
+    ds = []
+    for ti, tj in combinations(T, 2):
         if (
             (ti.rss & tj.rss) != set()
-            and (ti.idx - 1 in ti.pa)
-            and (tj.idx - 1 in tj.pa)
         ):
-            ds.add((ti, tj))
+            ds.append((ti, tj))
     return ds
 
 

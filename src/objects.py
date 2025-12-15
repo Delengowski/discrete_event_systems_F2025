@@ -1,7 +1,8 @@
 """My objects for verifying the algorithms."""
 
 from dataclasses import dataclass, field
-from typing import Literal
+from functools import total_ordering
+from typing import Literal, Self
 from data import load_table1, load_table3, ElementMapper
 
 
@@ -24,9 +25,10 @@ class ResourcePlace:
         return f"{type(self).__name__}({prefix}_{self.idx}{super_idx})"
 
 
-@dataclass(slots=True, frozen=True, repr=False, order=True)
+@total_ordering
+@dataclass(slots=True, frozen=True, repr=False, order=False)
 class Activity:
-    idx: int
+    idx: int | frozenset[Self]
     org: str | None = field(default=None, compare=False, hash=False)
     t_min: int | None = field(default=None, compare=False, hash=False)
     t_max: int | None = field(default=None, compare=False, hash=False)
@@ -40,6 +42,30 @@ class Activity:
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(t_{self.idx})"
+
+    def __lt__(self, other):
+        if not isinstance(other, type(self)):
+            return NotImplemented
+        match (self.idx, other.idx):
+            case [int(), int()]:
+                return self.idx < other.idx
+            case [int(), frozenset()]:
+                return self.idx < min(other.idx)
+            case [frozenset(), int()]:
+                return min(self.idx) < other.idx
+            case [frozenset(), frozenset()]:
+                return min(self.idx) < min(other.idx)
+
+    def __eq__(self, other):
+        if not isinstance(other, type(self)):
+            return NotImplemented
+        match (self.idx, other.idx):
+            case [int(), int()] | [frozenset(), frozenset()]:
+                return self.idx == other.idx
+            case [int(), frozenset()]:
+                return frozenset([self.idx]) == other.idx
+            case [frozenset(), int()]:
+                return self.idx == frozenset([other.idx])
 
 
 table1 = load_table1()
