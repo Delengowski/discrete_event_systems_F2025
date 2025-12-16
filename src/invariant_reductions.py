@@ -235,7 +235,12 @@ def rule1_tie_breaker(results: list) -> list[tuple[Activity, int]]:
     for prod in product(*results):
         if sum(x == frozenset((tuple(),)) for x in prod) == 2:
             overall_winner = max(prod, key=len)
-            winners.append((overall_winner, next(idx for idx, x in enumerate(results) if overall_winner in x)))
+            winners.append(
+                (
+                    overall_winner,
+                    next(idx for idx, x in enumerate(results) if overall_winner in x),
+                )
+            )
         else:
             ties = []
             for combo in combinations(prod, 2):
@@ -244,7 +249,14 @@ def rule1_tie_breaker(results: list) -> list[tuple[Activity, int]]:
                     ties.append(overall_winner)
             if ties:
                 overall_winner = max(ties, key=len)
-                winners.append((overall_winner, next(idx for idx, x in enumerate(results) if overall_winner in x)))
+                winners.append(
+                    (
+                        overall_winner,
+                        next(
+                            idx for idx, x in enumerate(results) if overall_winner in x
+                        ),
+                    )
+                )
     return list(set(winners))
 
 
@@ -258,7 +270,15 @@ def consolidate_rule(
                 for act in result[0]:
                     cur_list_opt.pop(cur_list_opt.index(act))
                 result, rule_idx = result
-                idx = frozenset(x for x in chain(*((act.idx,) if isinstance(act.idx, int) else act.idx for act in result)))
+                idx = frozenset(
+                    x
+                    for x in chain(
+                        *(
+                            (act.idx,) if isinstance(act.idx, int) else act.idx
+                            for act in result
+                        )
+                    )
+                )
                 t_min = sum(act.t_min for act in result)
                 t_max = sum(act.t_max for act in result)
                 pa = min(result).pa
@@ -269,7 +289,9 @@ def consolidate_rule(
                         rule_kwargs = {"rss": min(result).rss}
                     case 2:
                         rule_kwargs = {"rss": min(result).srs}
-                cur_list_opt.append(Activity(idx=idx, t_min=t_min, t_max=t_max, pa=pa, **rule_kwargs))
+                cur_list_opt.append(
+                    Activity(idx=idx, t_min=t_min, t_max=t_max, pa=pa, **rule_kwargs)
+                )
             case 2:
                 for act in result:
                     cur_list_opt.pop(cur_list_opt.index(act))
@@ -300,11 +322,11 @@ def apply_rules(T: list[Activity]) -> list[Activity]:
             for rule in rule1_checks
         ]
         winners = rule1_tie_breaker(rule1_results)
-        if winners != [(frozenset((tuple(),)),0)]:
+        if winners != [(frozenset((tuple(),)), 0)]:
             T_opt = consolidate_rule(winners, T_opt, 1)
         rule2_results = rule2(T_opt)
         if rule2_results:
             T_opt = consolidate_rule(rule2_results, T_opt, 2)
-        if winners == [(frozenset((tuple(),)),0)] and not rule2_results:
+        if winners == [(frozenset((tuple(),)), 0)] and not rule2_results:
             has_reductions = False
     return T_opt

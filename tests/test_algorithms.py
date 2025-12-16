@@ -5,9 +5,11 @@ from src.objects import Activity
 from src.invariant_reductions import apply_rules
 import pytest
 
+
 @pytest.fixture
 def T_opt(T):
     return sorted(list(set(apply_rules(T))))
+
 
 def test_dependency_set(T_opt):
     ds = dependency_set(T_opt)
